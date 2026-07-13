@@ -13,28 +13,27 @@ async function cargarBoleto() {
         
         if (!response.ok) throw new Error("No se pudo obtener el boleto del servidor");
 
-        // 3. AQUÍ DEFINIMOS 'boleto'
         const boleto = await response.json(); 
 
-        // 4. Formateamos la fecha antes de mostrarla
-        const fechaRaw = new Date(boleto.fecha_salida);
-        const fechaFormateada = fechaRaw.toLocaleDateString('es-PE', { 
-            year: 'numeric', month: 'long', day: 'numeric' 
-        });
+   
+        const fechaRaw = boleto.fecha_salida ? boleto.fecha_salida.split('T')[0] : 'Fecha no disponible';
 
-        // 5. Inyectamos los datos en el HTML
-        document.getElementById('detalle-boleto').innerHTML = `
-            <p><strong>Pasajero:</strong> <span>${boleto.nombres} ${boleto.apellido_paterno} ${boleto.apellido_materno}</span></p>
-            <p><strong>Ruta:</strong> <span>${boleto.origen} - ${boleto.destino}</span></p>
-            <p><strong>Fecha:</strong> <span>${fechaFormateada}</span></p>
-            <p><strong>Hora:</strong> <span>${boleto.hora_salida.substring(0, 5)}</span></p>
-            <p><strong>Asiento:</strong> <span>${boleto.numero_asiento}</span></p>
-            <p><strong>Total Pagado:</strong> <span>S/. ${boleto.monto_pagado}</span></p>
-        `;
+        // 4. Inyectamos los datos en el HTML
+        const detalleContainer = document.getElementById('detalle-boleto');
+        if (detalleContainer) {
+            detalleContainer.innerHTML = `
+                <p><strong>Pasajero:</strong> <span>${boleto.nombres} ${boleto.apellido_paterno} ${boleto.apellido_materno}</span></p>
+                <p><strong>Ruta:</strong> <span>${boleto.origen} - ${boleto.destino}</span></p>
+                <p><strong>Fecha:</strong> <span>${fechaRaw}</span></p>
+                <p><strong>Hora:</strong> <span>${boleto.hora_salida.substring(0, 5)}</span></p>
+                <p><strong>Asiento:</strong> <span>${boleto.numero_asiento}</span></p>
+                <p><strong>Total Pagado:</strong> <span>S/. ${parseFloat(boleto.monto_pagado).toFixed(2)}</span></p>
+            `;
+        }
 
         const qrContainer = document.getElementById("qrcode");
         if (qrContainer) {
-            qrContainer.innerHTML = ""; // Limpiar antes de generar uno nuevo
+            qrContainer.innerHTML = ""; 
             new QRCode(qrContainer, {
                 text: boleto.codigo_boleto,
                 width: 128,
@@ -44,6 +43,10 @@ async function cargarBoleto() {
         
     } catch (error) {
         console.error("Error al cargar el boleto:", error);
+        const detalleContainer = document.getElementById('detalle-boleto');
+        if (detalleContainer) {
+            detalleContainer.innerHTML = "<p>Error al cargar los detalles del boleto.</p>";
+        }
     }
 }
 
