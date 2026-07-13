@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const pool = require('./db'); // IMPORTAMOS DESDE EL ARCHIVO QUE CORREGIMOS
+const pool = require('./config/db'); // IMPORTAMOS DESDE EL ARCHIVO QUE CORREGIMOS
 
 const app = express();
 const PORT = process.env.PORT || 10000;
