@@ -1,22 +1,16 @@
 const { Pool } = require('pg');
-require('dotenv').config(); 
+require('dotenv').config();
 
-// Configuramos el Pool de conexiones
+// Creamos el pool usando la URL si existe, si no, usa los valores por defecto (útil para local)
 const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: process.env.DB_NAME
-});
-
-// Mensaje en consola para verificar si conectó a Postgres
-pool.query('SELECT NOW()', (err, res) => {
-    if (err) {
-        console.error('Error crítico al conectar a PostgreSQL:', err.stack);
-    } else {
-        console.log('Conexión exitosa a PostgreSQL. Hora del servidor BD:', res.rows[0].now);
-    }
+  },
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
 module.exports = pool;
