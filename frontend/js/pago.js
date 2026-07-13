@@ -40,12 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw new Error(errorData.error || "Error al registrar un asiento");
                 }
 
-                // Capturamos el ID que devuelve el servidor
                 const data = await response.json();
                 ultimoIdBoleto = data.id_boleto;
             }
 
-            // Guardamos solo el ID para que boleto.html lo consulte después
+            // Guardamos el ID para que boleto.html lo consulte después
             localStorage.setItem('ultimo_id_boleto', ultimoIdBoleto);
 
             // Limpieza

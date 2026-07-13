@@ -47,7 +47,7 @@
         async function liberarAsientos() {
             const usuario = JSON.parse(localStorage.getItem('usuario_logueado'));
             if (usuario) {
-                await fetch('http://localhost:3000/api/bloquear-asientos/liberar', {
+                await fetch('/api/bloquear-asientos/liberar', {
                     method: 'POST', // O DELETE, según prefieras
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id_usuario: usuario.id_usuario })
