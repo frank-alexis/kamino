@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Cargar ciudades una sola vez
     async function cargarCiudadesBuscador() {
         try {
-            const response = await fetch('http://localhost:3000/api/rutas');
+            const response = await fetch('/api/rutas');
             const rutas = await response.json();
             const setCiudades = new Set();
             rutas.forEach(r => { setCiudades.add(r.origen); setCiudades.add(r.destino); });
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
             contenedorResultados.innerHTML = `<p style="text-align: center; color: #6b7280;">Buscando viajes disponibles...</p>`;
 
             try {
-                const url = `http://localhost:3000/api/buscar-viajes?origen=${encodeURIComponent(origen)}&destino=${encodeURIComponent(destino)}&fecha=${fecha}`;
+                const url = `/api/buscar-viajes?origen=${encodeURIComponent(origen)}&destino=${encodeURIComponent(destino)}&fecha=${fecha}`;
                 const response = await fetch(url);
                 const viajes = await response.json();
 

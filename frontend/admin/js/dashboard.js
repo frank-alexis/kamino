@@ -102,7 +102,7 @@ async function guardarEdicionBus() {
 
     try {
         // Enviamos todos los datos al backend
-        const response = await fetch(`http://localhost:3000/api/buses/${id}`, {
+        const response = await fetch(`/api/buses/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosActualizados)
@@ -126,7 +126,7 @@ async function guardarEdicionBus() {
 async function eliminarBus(id) {
     if (confirm("¿Estás seguro de eliminar este bus?")) {
         try {
-            const response = await fetch(`http://localhost:3000/api/buses/${id}`, { method: 'DELETE' });
+            const response = await fetch(`/api/buses/${id}`, { method: 'DELETE' });
             if (response.ok) {
                 alert("Bus eliminado correctamente.");
                 cargarBuses();
@@ -153,7 +153,7 @@ async function guardarEdicionRuta() {
     };
 
     try {
-        const response = await fetch(`http://localhost:3000/api/rutas/${id}`, {
+        const response = await fetch(`/api/rutas/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -172,7 +172,7 @@ async function guardarEdicionRuta() {
 async function eliminarRuta(id) {
     if (confirm("¿Eliminar esta ruta?")) {
         try {
-            const response = await fetch(`http://localhost:3000/api/rutas/${id}`, { method: 'DELETE' });
+            const response = await fetch(`/api/rutas/${id}`, { method: 'DELETE' });
             if (response.ok) { cargarTablaRutas(); }
         } catch (error) { console.error("Error:", error); }
     }
@@ -202,7 +202,7 @@ async function guardarEdicionViaje() {
     };
 
     try {
-        const response = await fetch(`http://localhost:3000/api/viajes/${id}`, {
+        const response = await fetch(`/api/viajes/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -225,7 +225,7 @@ async function guardarEdicionViaje() {
 async function eliminarViaje(id) {
     if (confirm("¿Cancelar este viaje programado?")) {
         try {
-            const response = await fetch(`http://localhost:3000/api/viajes/${id}`, { method: 'DELETE' });
+            const response = await fetch(`/api/viajes/${id}`, { method: 'DELETE' });
             if (response.ok) { cargarTablaHorarios(); }
         } catch (error) { console.error("Error:", error); }
     }
@@ -236,7 +236,7 @@ async function cargarBuses() {
     const busesTableBody = document.getElementById('buses-table-body');
     if (!busesTableBody) return;
     try {
-        const response = await fetch('http://localhost:3000/api/buses');
+        const response = await fetch('/api/buses');
         const buses = await response.json();
         busesTableBody.innerHTML = '';
         buses.forEach((bus, index) => {
@@ -262,7 +262,7 @@ async function cargarTablaRutas() {
     const rutasTableBody = document.getElementById('rutas-table-body');
     if (!rutasTableBody) return;
     try {
-        const response = await fetch('http://localhost:3000/api/rutas');
+        const response = await fetch('/api/rutas');
         const rutas = await response.json();
         rutasTableBody.innerHTML = '';
         rutas.forEach((r, index) => {
@@ -287,7 +287,7 @@ async function cargarTablaHorarios() {
     const horariosTableBody = document.getElementById('horarios-table-body');
     if (!horariosTableBody) return;
     try {
-        const response = await fetch('http://localhost:3000/api/viajes');
+        const response = await fetch('/api/viajes');
         const horarios = await response.json();
         horariosTableBody.innerHTML = '';
         horarios.forEach((h, index) => { 
@@ -316,8 +316,8 @@ async function cargarTablaHorarios() {
 async function cargarSelectsViaje() {
     try {
         const [resRutas, resBuses] = await Promise.all([
-            fetch('http://localhost:3000/api/rutas'), 
-            fetch('http://localhost:3000/api/buses')
+            fetch('/api/rutas'), 
+            fetch('/api/buses')
         ]);
         const rutas = await resRutas.json();
         const buses = await resBuses.json();
@@ -372,7 +372,7 @@ function configurarFechaMinima() {
 // Función para cargar los datos al activar la sección
 async function cargarVentas() {
     try {
-        const res = await fetch('http://localhost:3000/api/ventas');
+        const res = await fetch('/api/ventas');
         const ventas = await res.json();
         const tbody = document.getElementById('body-ventas');
         
@@ -482,14 +482,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('bus-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const datos = Object.fromEntries(new FormData(e.target));
-        await fetch('http://localhost:3000/api/buses', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(datos)});
+        await fetch('/api/buses', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(datos)});
         cargarBuses();
     });
 
     document.getElementById('ruta-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const datos = Object.fromEntries(new FormData(e.target));
-        await fetch('http://localhost:3000/api/rutas', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(datos)});
+        await fetch('/api/rutas', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(datos)});
         cargarTablaRutas();
         cargarSelectsViaje();
     });
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('viaje-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const datos = Object.fromEntries(new FormData(e.target));
-        await fetch('http://localhost:3000/api/viajes', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(datos)});
+        await fetch('/api/viajes', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(datos)});
         cargarTablaHorarios();
     });
 

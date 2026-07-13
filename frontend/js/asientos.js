@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         //Traer los detalles del viaje y los asientos ocupados desde el Backend
         const [resDetalles, resOcupados] = await Promise.all([
-            fetch(`http://localhost:3000/api/horarios/${idHorario}/detalles`),
-            fetch(`http://localhost:3000/api/horarios/${idHorario}/asientos-ocupados`)
+            fetch(`/api/horarios/${idHorario}/detalles`),
+            fetch(`/api/horarios/${idHorario}/asientos-ocupados`)
         ]);
 
         const detalles = await resDetalles.json();
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             // 1. Llamamos al API de bloqueo antes de navegar
             try {
-                const response = await fetch('http://localhost:3000/api/bloquear-asientos', {
+                const response = await fetch('/api/bloquear-asientos', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

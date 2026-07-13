@@ -14,7 +14,7 @@ async function cargarMisCompras() {
     }
 
     try {
-        const res = await fetch(`http://localhost:3000/api/mis-boletos/${usuario.id_usuario}`);
+        const res = await fetch(`/api/mis-boletos/${usuario.id_usuario}`);
         const boletos = await res.json();
 
         if (boletos.length === 0) {

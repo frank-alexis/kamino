@@ -9,7 +9,7 @@ async function cargarBoleto() {
 
     try {
         // 2. Hacemos la consulta al servidor
-        const response = await fetch(`http://localhost:3000/api/boletos/${idBoleto}`);
+        const response = await fetch(`/api/boletos/${idBoleto}`);
         
         if (!response.ok) throw new Error("No se pudo obtener el boleto del servidor");
 

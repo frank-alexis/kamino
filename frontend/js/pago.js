@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Procesar cada asiento individualmente
             for (const id_asiento of asientos) {
-                const response = await fetch('http://localhost:3000/api/boletos', {
+                const response = await fetch('/api/boletos', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem('compra_info');
 
             // Liberar bloqueos de asientos
-            await fetch('http://localhost:3000/api/bloquear-asientos/liberar', {
+            await fetch('/api/bloquear-asientos/liberar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }, 
                 body: JSON.stringify({ id_usuario: usuario.id_usuario })
