@@ -10,12 +10,13 @@ app.use(cors());
 app.use(express.json());
 
 
+// --- CONFIGURACIÓN PARA EL FRONTEND ---
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-app.get('*', (req, res) => {
+// Cambia app.get('*', ...) por esto:
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
-// ----------------------------------------------
 
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
