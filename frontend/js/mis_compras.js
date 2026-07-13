@@ -69,8 +69,7 @@ async function verBoleto(idBoleto) {
     detalleContenido.innerHTML = "<p>Cargando detalles...</p>";
 
     try {
-        // Asumiendo que ya tienes la lista de boletos cargada en memoria, 
-        // o puedes hacer un nuevo fetch si prefieres.
+       
         const res = await fetch(`/api/boletos/${idBoleto}`);
         const b = await res.json();
 
@@ -78,7 +77,7 @@ async function verBoleto(idBoleto) {
             <p><strong>Ruta:</strong> ${b.origen} a ${b.destino}</p>
             <p><strong>Fecha/Hora:</strong> ${new Date(b.fecha_salida).toLocaleDateString()} ${b.hora_salida}</p>
             <p><strong>Asiento:</strong> ${b.numero_asiento}</p>
-            <p><strong>Estado:</strong> ${b.estado_boleto}</p>
+            
             <p><strong>Total pagado:</strong> S/ ${b.monto_pagado}</p>
         `;
     } catch (e) {
