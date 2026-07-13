@@ -60,9 +60,33 @@ async function cargarMisCompras() {
 }
 
 // Función que se ejecutará al hacer clic en cualquier botón
-function verBoleto(idBoleto) {
-    console.log("Abriendo detalles del boleto:", idBoleto);
-    // Aquí puedes redirigir o abrir un modal
-    // window.location.href = `detalle_boleto.html?id=${idBoleto}`;
-    alert("Función para ver el boleto ID: " + idBoleto);
+async function verBoleto(idBoleto) {
+    const modal = document.getElementById('modal-boleto');
+    const detalleContenido = document.getElementById('detalle-contenido');
+    
+    // Mostramos el modal
+    modal.style.display = 'block';
+    detalleContenido.innerHTML = "<p>Cargando detalles...</p>";
+
+    try {
+        // Asumiendo que ya tienes la lista de boletos cargada en memoria, 
+        // o puedes hacer un nuevo fetch si prefieres.
+        const res = await fetch(`/api/boletos/${idBoleto}`);
+        const b = await res.json();
+
+        detalleContenido.innerHTML = `
+            <p><strong>Ruta:</strong> ${b.origen} a ${b.destino}</p>
+            <p><strong>Fecha/Hora:</strong> ${new Date(b.fecha_salida).toLocaleDateString()} ${b.hora_salida}</p>
+            <p><strong>Asiento:</strong> ${b.numero_asiento}</p>
+            <p><strong>Estado:</strong> ${b.estado_boleto}</p>
+            <p><strong>Total pagado:</strong> S/ ${b.monto_pagado}</p>
+        `;
+    } catch (e) {
+        detalleContenido.innerHTML = "<p>No se pudo cargar el detalle.</p>";
+    }
 }
+
+// Lógica para cerrar el modal
+document.querySelector('.cerrar-modal').addEventListener('click', () => {
+    document.getElementById('modal-boleto').style.display = 'none';
+});
