@@ -1,0 +1,45 @@
+/* Reset y estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1570125909517-53cb21c89ff2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.auth-container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+}
+
+.auth-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px); 
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 400px;
+    color: white;
+    text-align: center;
+}
+
+.input-group { margin-bottom: 20px; border-bottom: 1px solid white; display: flex; align-items: center; }
+.input-group input, .input-group select { border: none;outline: none; background: transparent; padding: 10px; color: white; width: 100%; }
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+    background: #1a2a3a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+select option {
+    color: #333 !important;
+    background-color: #ffffff !important;
+}

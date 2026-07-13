@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamino - Autenticación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Kami<span>no</span></a>
+        <nav>
+            <div id="auth-container">
+                <a href="login.html" id="btn-login">Iniciar Sesión</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="auth-container1">
+        
+        <form id="login-form" class="auth-box">
+            <h2>Iniciar Sesión</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="correo" placeholder="Correo electrónico" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="contrasena" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Ingresar</button>
+            <p>¿No tienes cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
+        </form>
+
+        <form id="register-form" class="auth-box" style="display: none;">
+            <h2>Crea tu cuenta</h2>
+            
+            <div class="input-group">
+                <i class="fas fa-id-card"></i>
+                <select name="tipo_documento" required>
+                    <option value="" disabled selected>Tipo de Doc.</option>
+                    <option value="DNI">DNI</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-fingerprint"></i>
+                <input type="text" name="numero_documento" placeholder="Número de documento" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="nombres" placeholder="Nombres" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="apellido_paterno" placeholder="Apellido Paterno" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="apellido_materno" placeholder="Apellido Materno" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="tel" name="telefono" placeholder="Teléfono / Celular" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="correo" placeholder="Correo electrónico" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="contrasena" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Registrarse</button>
+            <p>¿Ya tienes cuenta? <a href="#" id="show-login">Acceder</a></p>
+            
+        </form>
+
+    </div> 
+    <script src="js/auth.js"></script>
+    <script src="js/header.js"></script>
+
+</body>
+</html>

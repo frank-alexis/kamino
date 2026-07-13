@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamino - Selecciona tus Asientos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/asientos.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Kami<span>no</span></a>
+        <nav>
+            <div id="auth-container">
+                <a href="mis_compras.html" id="nav-mis-compras" style="display: none;">Mis Compras</a>
+                <a href="login.html" id="btn-login">Iniciar Sesión</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Selecciona tus Asientos</h2>
+        <p class="subtitulo" id="info-viaje">Cargando detalles del viaje...</p>
+
+        <div class="leyenda">
+            <div class="leyenda-item"><div class="cuadrito disponible"></div> Disponible</div>
+            <div class="leyenda-item"><div class="cuadrito seleccionado"></div> Tu Selección</div>
+            <div class="leyenda-item"><div class="cuadrito ocupado"></div> Ocupado</div>
+        </div>
+
+        <div class="bus-layout">
+            <div id="asientos-contenedor" class="asientos-grid">
+                </div>
+        </div>
+
+        <div class="resumen-box">
+            <p><strong>Asientos seleccionados:</strong> <span id="asientos-texto" style="color: #007bff; font-weight: bold;">Ninguno</span></p>
+            <p style="margin-top: 5px;"><strong>Total a pagar:</strong> <span id="total-texto" style="color: #28a745; font-weight: bold; font-size: 18px;">S/. 0.00</span></p>
+            <button id="btn-procesar" class="btn-continuar" disabled>Continuar con el Pago</button>
+        </div>
+    </div>
+
+    
+    <script src="js/asientos.js"></script>
+    <script src="js/header.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+.container { width: 90%; max-width: 600px; margin: 40px auto; }
+
+.card-boleto {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid #f59e0b; /* Color Kamino */
+}
+
+.card-boleto h3 { margin: 0 0 10px 0; color: #1e3a8a; }
+
+.card-boleto button {
+    background: #000;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

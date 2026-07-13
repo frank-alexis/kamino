@@ -1,0 +1,203 @@
+body {
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+
+/* HERO / BANNER BUSCADOR */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1535758290333-eb50c0667364?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center/cover;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    color: #fff;
+    font-size: 38px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero p {
+    color: #f3f4f6;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* CONTENEDOR DEL FORMULARIO */
+.search-container {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 900px;
+}
+
+.search-form {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #4b5563;
+}
+
+.input-group select, .input-group input {
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: #fff;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group select:focus, .input-group input:focus {
+    border-color: #1e3a8a;
+}
+
+.btn-search {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    min-height: 48px;
+    margin-top: auto;
+}
+
+.btn-search:hover {
+    background-color: #218838;
+}
+
+/* RESULTADOS DE LA BÚSQUEDA */
+.resultados-section {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.resultados-section h2 {
+    margin-bottom: 20px;
+    color: #1e3a8a;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 10px;
+}
+
+/* Estilo para las tarjetas de viaje */
+.viaje-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    border-left: 5px solid #f59e0b;
+}
+
+.viaje-info h3 {
+    color: #1e3a8a;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.viaje-info p {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.viaje-precio {
+    text-align: right;
+}
+
+.viaje-precio .precio-tag {
+    font-size: 24px;
+    font-weight: 700;
+    color: #28a745;
+    display: block;
+}
+
+.btn-comprar {
+    background-color: #1e3a8a;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 5px;
+}
+
+.btn-comprar:hover {
+    background-color: #111827;
+}
+
+.destinos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 250px;
+    gap: 15px;
+    padding: 20px;
+}
+
+.destino-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.destino-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.destino-item:hover img { transform: scale(1.05); }
+
+
+.destino-item.grande {
+    grid-row: span 2; 
+}
+
+/* --- NUEVO CONTENEDOR PARA DESTINOS POPULARES --- */
+.destinos-populares-container {
+    max-width: 70%;      /* Limita el ancho al 70% */
+    margin: 50px auto;   /* Centrado y espacio arriba/abajo */
+}
+
+.nombre {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}

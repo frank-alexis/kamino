@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Administrativo - Kamino</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="user-profile">
+                <i class="fas fa-user-circle"></i>
+                <p>Administrador</p>
+            </div>
+            <nav class="nav-menu">
+                <button onclick="showSection('buses')"><i class="fas fa-bus"></i> Gestión de Buses</button>
+                <button onclick="showSection('rutas')"><i class="fas fa-route"></i> Gestión de Rutas</button>
+                <button onclick="showSection('viajes')"><i class="fas fa-calendar-alt"></i> Programar Viajes</button>
+                <button onclick="showSection('ventas')"><i class="fas fa-ticket-alt"></i> Ventas Realizadas</button>
+            </nav>
+            <a href="#" id="logout-btn" class="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        </aside>
+
+        <main class="main-content">
+            <header><h2>Panel Administrativo Kamino</h2></header>
+
+                <section id="buses" class="content-section">
+            <h3>Gestión de Autobuses</h3>
+            <div class="gestion-container">
+                <div class="registro-wrapper" style="display: flex; gap: 300px;">
+                <div class="formulario-box">
+                    <h4>Registrar Nuevo Autobús</h4>
+                    <form id="bus-form">
+                        <div class="input-group">
+                            <label>Número de Placa:</label>
+                            <input type="text" name="placa" placeholder="Ej: ABC-123" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Marca:</label>
+                            <input type="text" name="marca" placeholder="Ej: Mercedes-Benz" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Modelo / Tipo:</label>
+                            <input type="text" name="modelo" placeholder="Ej: Paradiso 1800" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Capacidad de Asientos:</label>
+                            <input type="number" name="capacidad" placeholder="Ej: 45" min="1" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar Bus</button>
+                        <button type="reset" class="btn-reset">Limpiar</button>
+                    </form>
+                    </div>
+
+                    <div class="imagen-container">
+                        <img src="img/bus.png" alt="Autobús" class="fondo-img">
+                    </div>
+                    </div>
+                <div class="tabla-box">
+                    <div class="table-toolbar">
+                        <div class="filter-group">
+                            <label>Buscar:</label>
+                            <input class="search-input" type="text" id="buscador-buses" placeholder="Buscar por placa o marca..." onkeyup="filtrarBuses()">
+                        </div>
+                    </div>
+                    
+                    <h4>Lista de Buses en la Empresa</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Placa</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Capacidad</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="buses-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="edit-modal" style="display:none; position:fixed; top:15%; left:35%; background:white; padding:25px; border-radius:10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; width: 350px;">
+                <h3>Editar Bus</h3>
+                <input type="hidden" id="edit-id-bus">
+                
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label>Placa:</label>
+                    <input type="text" id="edit-placa" style="width: 100%; padding: 8px; box-sizing: border-box;">
+                </div>
+                
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label>Marca:</label>
+                    <input type="text" id="edit-marca" style="width: 100%; padding: 8px; box-sizing: border-box;">
+                </div>
+                
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label>Modelo:</label>
+                    <input type="text" id="edit-modelo" style="width: 100%; padding: 8px; box-sizing: border-box;">
+                </div>
+                
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label>Capacidad:</label>
+                    <input type="number" id="edit-capacidad" style="width: 100%; padding: 8px; box-sizing: border-box;">
+                </div>
+
+                <button onclick="guardarEdicionBus()" class="btn-primary" style="width: 100%; padding: 10px; margin-bottom: 5px;">Guardar Cambios</button>
+                <button onclick="document.getElementById('edit-modal').style.display='none'" class="btn-secundary" style="width: 100%; padding: 10px;">Cancelar</button>
+            </div>
+        </section>
+
+        <section id="rutas" class="content-section" style="display:none;">
+            <h3>Gestión de Rutas</h3>
+            <div class="registro-wrapper" style="display: flex; gap: 300px;">
+            <div class="formulario-box">
+                <h4>Crear Nueva Ruta de Viaje</h4>
+                <form id="ruta-form">
+                    <div class="input-group">
+                        <label>Ciudad de Origen:</label>
+                        <input type="text" name="origen" placeholder="Ej: Lima" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Ciudad de Destino:</label>
+                        <input type="text" name="destino" placeholder="Ej: Trujillo" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Precio Base (S/.):</label>
+                        <input type="number" name="precio" placeholder="Ej: 60.00" step="0.01" min="1" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Guardar Ruta</button>
+                    <button type="reset" class="btn-reset">Limpiar</button>
+                </form>
+            </div>
+                <div class="imagen-container">
+                        <img src="img/ruta.png" alt="Autobús" class="fondo-img">
+                </div>
+            </div>
+
+            <div class="tabla-box">
+                <div class="table-toolbar">
+                    <div class="filter-group">
+                        <label>Buscar:</label>
+                        <input class="search-input" type="text" id="buscador-rutas" placeholder="Buscar por origen o destino..." onkeyup="filtrarRutas()">
+                        </div>
+                    </div>
+
+            <h4>Rutas de Viaje Registradas</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Precio Base</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="rutas-table-body">
+                    </tbody>
+            </table>
+            </div>
+            <div id="edit-ruta-modal" style="display:none; position:fixed; top:20%; left:35%; background:white; padding:25px; border-radius:10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; width: 350px;">
+                <h3>Editar Ruta</h3>
+                <input type="hidden" id="edit-id-ruta">
+                
+                <div class="input-group">
+                    <label>Origen:</label>
+                    <input type="text" id="edit-origen" style="width:100%; padding:8px; margin-bottom:10px;">
+                </div>
+                <div class="input-group">
+                    <label>Destino:</label>
+                    <input type="text" id="edit-destino" style="width:100%; padding:8px; margin-bottom:10px;">
+                </div>
+                <div class="input-group">
+                    <label>Precio:</label>
+                    <input type="number" id="edit-precio" style="width:100%; padding:8px; margin-bottom:10px;">
+                </div>
+                
+                <button onclick="guardarEdicionRuta()" class="btn-primary">Guardar Cambios</button>
+                <button onclick="document.getElementById('edit-ruta-modal').style.display='none'" class="btn-secundary">Cancelar</button>
+            </div>
+            </section>
+
+        <section id="viajes" class="content-section" style="display:none;">
+            <h3>Programar Salida (Viaje)</h3>
+            <div class="registro-wrapper" style="display: flex; gap: 300px;">
+            <div class="formulario-box">
+            <form id="viaje-form">
+                <div class="input-group">
+                    <label>Seleccionar Ruta:</label>
+                    <select id="select-ruta" name="id_ruta" required>
+                        <option value="" disabled selected>Cargando rutas...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Seleccionar Bus:</label>
+                    <select id="select-bus" name="id_bus" required>
+                        <option value="" disabled selected>Cargando buses...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Fecha y Hora de Salida:</label>
+                    <input type="datetime-local" name="fecha_salida" required>
+                </div>
+                <button type="submit" class="btn-primary">Programar Viaje</button>
+                <button type="reset" class="btn-reset">Limpiar</button>
+            </form>
+            </div>
+            <div class="imagen-container">
+                        <img src="img/horario.png" alt="Autobús" class="horario-img">
+                </div>
+            </div>
+            <div class="tabla-box">
+                <div class="table-toolbar" class="input-group">
+                    <div class="filter-group">
+                        <label>Buscar:</label>
+                        <input class="search-input" type="text" id="buscador-viajes" placeholder="Buscar destino, placa" onkeyup="filtrarViajes()">
+                    </div>
+                    <div class="filter-group">
+                            <label>Fecha:</label>
+                            <input  type="date" id="filtro-fecha" onchange="filtrarViajes()">
+                        </div>
+                    </div>
+
+            <h4>Cronograma de Viajes (Horarios)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>N° Horario</th>
+                        <th>Ruta (Origen ➔ Destino)</th>
+                        <th>Bus (Placa)</th>
+                        <th>Fecha de Salida</th>
+                        <th>Hora de Salida</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="horarios-table-body">
+                    </tbody>
+            </table>
+        </div>
+        <div id="edit-viaje-modal" class="modal" style="display:none; position:fixed; top:20%; left:35%; background:white; padding:25px; border-radius:10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000;">
+            <h3>Editar Viaje</h3>
+            <input type="hidden" id="edit-id-viaje">
+            
+            <div class="input-group">
+                <label>Ruta:</label>
+                <select id="edit-select-ruta"></select>
+            </div>
+            <div class="input-group">
+                <label>Bus:</label>
+                <select id="edit-select-bus"></select>
+            </div>
+            <div class="input-group">
+                <label>Fecha:</label>
+                <input type="date" id="edit-fecha">
+            </div>
+            <div class="input-group">
+                <label>Hora:</label>
+                <input type="time" id="edit-hora">
+            </div>
+            
+            <button onclick="guardarEdicionViaje()" class="btn-primary">Guardar Cambios</button>
+            <button onclick="document.getElementById('edit-viaje-modal').style.display='none'" class="btn-secundary">Cancelar</button>
+        </div>
+        </section>
+
+        <section id="ventas" class="content-section" style="display: none;">
+            <h3>Gestión de Ventas</h3>
+            <div class="gestion-container">
+                <div class="tabla-box">
+                    <div class="table-toolbar">
+                        <div class="filter-group">
+                            <label>Buscar:</label>
+                            <input type="text" id="buscador-ventas" placeholder="Cod, Pasajero o Ruta..." onkeyup="filtrarVentas()">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Fecha de Salida:</label>
+                            <input type="date" id="filtro-fecha-inicio" class="filtro-busqueda" onchange="filtrarVentas()">
+                        </div>
+                                              
+                        <button class="btn-clear" onclick="limpiarFiltros()">Limpiar</button>
+                    </div>
+                    <h4>Reporte General de Boletos Vendidos</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código Boleto</th>
+                                <th>Pasajero</th>
+                                <th>Ruta</th>
+                                <th>Fecha Salida</th>
+                                <th>Monto (S/.)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-ventas">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

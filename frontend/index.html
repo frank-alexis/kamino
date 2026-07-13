@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamino - Venta de Pasajes de Autobús</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Kami<span>no</span></a>
+        <nav>
+            <div id="auth-container">
+                <a href="mis_compras.html" id="nav-mis-compras" style="display: none;">Mis Compras</a>
+                <a href="login.html" id="btn-login">Iniciar Sesión</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Viaja seguro por todo el país</h1>
+        <p>Compara y compra tus pasajes de autobús en segundos al mejor precio</p>
+        
+        <div class="search-container">
+            <form id="buscador-form" class="search-form">
+                <div class="input-group">
+                    <label>ORIGEN</label>
+                    <select id="search-origen" name="origen" required>
+                        <option value="" disabled selected>Cargando orígenes...</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>DESTINO</label>
+                    <select id="search-destino" name="destino" required>
+                        <option value="" disabled selected>Cargando destinos...</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>FECHA DE SALIDA</label>
+                    <input type="date" id="search-fecha" name="fecha" required>
+                </div>
+
+                <button type="submit" class="btn-search">Buscar Pasajes</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="resultados-section">
+        <h2 id="resultados-titulo">Próximos Viajes Disponibles</h2>
+        <div id="contenedor-resultados">
+            <p style="color: #6b7280; text-align: center; margin-top: 20px;">
+                Selecciona un origen, destino y fecha para ver los itinerarios disponibles.
+            </p>
+        </div>
+    </section>
+
+    <section class="destinos-populares-container">
+        <h2>Destinos populares</h2>
+        <div class="destinos-grid">
+            <div class="destino-item grande"><img src="img/lima.jpg" alt="Lima"><span class="nombre">Lima</span></div>
+            <div class="destino-item"><img src="img/arequipa.jpg" alt="arequipa"><span class="nombre">Arequipa</span></div>
+            <div class="destino-item"><img src="img/trujillo.jpg" alt="Trujillo"><span class="nombre">Trujillo</span></div>
+            <div class="destino-item"><img src="img/cusco.jpg" alt="Cusco"><span class="nombre">Cusco</span></div>
+            <div class="destino-item"><img src="img/huaraz.jpg" alt="Huaraz"><span class="nombre">Huaraz</span></div>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script src="js/header.js"></script>
+
+
+</body>
+</html>

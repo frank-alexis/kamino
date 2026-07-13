@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tu Boleto - Kamino</title>
+    <link rel="stylesheet" href="css/boleto.css">
+    <link rel="stylesheet" href="css/global.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Kami<span>no</span></a>
+        <nav>
+            <div id="auth-container">
+                <a href="mis_compras.html" id="nav-mis-compras" style="display: none;">Mis Compras</a>
+                <a href="login.html" id="btn-login">Iniciar Sesión</a>
+            </div>
+        </nav>
+    </header>
+    <div id="boleto-container" class="boleto-card">
+        <div class="boleto-header">
+            <h2 class="logo">Kami<span>no</span></h2>
+            <p>Boleto de Viaje</p>
+        </div>
+        
+        <div class="boleto-body" id="detalle-boleto">
+            </div>
+        
+        <div class="boleto-footer">
+        <div id="qrcode"></div>
+        <p class="small-text">Presenta este código al abordar</p>
+    </div>
+
+    </div>
+
+    <script src="js/boleto.js"></script>
+    <script src="js/header.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</body>
+</html>
