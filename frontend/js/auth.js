@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const contrasena = loginForm.querySelector('input[type="password"]').value;
 
             try {
-                const response = await fetch('http://localhost:3000/api/auth/login', {
+                const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ correo, contrasena })
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 
-                const response = await fetch('http://localhost:3000/api/auth/registro', {
+                const response = await fetch('/api/auth/registro', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datosUsuario)
