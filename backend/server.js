@@ -9,15 +9,15 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 
-// 1. Primero, servimos archivos estáticos (CSS, JS, imágenes del frontend)
+// 1. Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// 2. Cargamos tus rutas de API ANTES de manejar el resto
+// 2. Cargar rutas de API
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
-// 3. Finalmente, si la ruta NO empieza por /api, devolvemos el index.html
-app.get('*', (req, res) => {
+// 3. SOLO ESTA LÍNEA es necesaria para el frontend (Sin usar el asterisco de forma directa)
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
