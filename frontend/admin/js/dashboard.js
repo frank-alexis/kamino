@@ -376,19 +376,21 @@ async function cargarVentas() {
         const ventas = await res.json();
         const tbody = document.getElementById('body-ventas');
         
-        // Solo cargamos los datos de las ventas
-        tbody.innerHTML = ventas.map(v => `
-            <tr>
+        tbody.innerHTML = ventas.map(v => {
+            // Extraemos la fecha limpia desde el origen
+            const fechaLimpia = v.fecha_salida ? v.fecha_salida.split('T')[0] : '';
+            
+            return `
+            <tr data-fecha="${fechaLimpia}">
                 <td>${v.codigo_boleto}</td>
                 <td>${v.nombres} ${v.apellido_paterno}</td>
                 <td>${v.origen} - ${v.destino}</td>
-                <td>${new Date(v.fecha_salida).toLocaleDateString()}</td>
+                <td>${fechaLimpia}</td> 
                 <td>${parseFloat(v.monto_pagado).toFixed(2)}</td>
             </tr>
-        `).join('');
+        `}).join('');
 
         recalcularTotalVisible(); 
-        
     } catch (err) {
         console.error("Error al cargar ventas:", err);
     }
@@ -421,25 +423,17 @@ function recalcularTotalVisible() {
 
 function filtrarVentas() {
     const inputBusqueda = document.getElementById("buscador-ventas").value.toLowerCase();
-    const fechaSeleccionada = document.getElementById("filtro-fecha-inicio").value; 
+    const fechaSeleccionada = document.getElementById("filtro-fecha-inicio").value; // Este valor ya es "YYYY-MM-DD"
     const filas = document.querySelectorAll("#body-ventas tr:not(.fila-total)");
     
     filas.forEach(fila => {
-        const textoFila = fila.textContent.toLowerCase();
-        const fechaCelda = fila.cells[3].innerText.trim(); 
+        // Obtenemos la fecha directa del atributo data-fecha
+        const fechaFila = fila.getAttribute('data-fecha');
         
-        let fechaFilaConvertida = "";
-        if (fechaCelda.includes('/')) {
-            const partes = fechaCelda.split('/');
-            const mes = partes[0].padStart(2, '0');
-            const dia = partes[1].padStart(2, '0');
-            const anio = partes[2];
-            
-            fechaFilaConvertida = `${anio}-${mes}-${dia}`;
-        }
-
+        const textoFila = fila.textContent.toLowerCase();
+        
         const coincideTexto = textoFila.includes(inputBusqueda);
-        const coincideFecha = fechaSeleccionada === "" || fechaFilaConvertida === fechaSeleccionada;
+        const coincideFecha = (fechaSeleccionada === "" || fechaFila === fechaSeleccionada);
         
         fila.style.display = (coincideTexto && coincideFecha) ? "" : "none";
     });
