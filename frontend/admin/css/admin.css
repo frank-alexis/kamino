@@ -373,11 +373,17 @@ tbody tr:hover {
 
     .sidebar {
         width: 100%;
-        height: auto 그; 
+        height: auto; 
+    }
+
+
+    .imagen-container {
+        display: none;
     }
 
     .formulario-box {
-        width: 90%;
+        width: 90% !important; 
+        margin: 0 auto;
     }
 
     .table-toolbar {
@@ -388,8 +394,14 @@ tbody tr:hover {
     .btn-primary, .btn-reset, .btn-secundary {
         width: 100%; 
     }
-}
 
+
+    .nav-menu {
+        flex-direction: row;
+        overflow-x: auto; 
+        padding: 10px;
+    }
+}
 
 @media (min-width: 769px) and (max-width: 1024px) {
     .sidebar {
