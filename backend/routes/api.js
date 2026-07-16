@@ -148,7 +148,7 @@ router.post('/buses', async (req, res) => {
 // OBTENER TODAS LAS RUTAS 
 router.get('/rutas', async (req, res) => {
     try {
-        const result = await pool.query(`SELECT id_ruta, origen, destino, precio_base AS precio FROM ruta ORDER BY id_ruta DESC`);
+        const result = await pool.query(`SELECT id_ruta, origen, destino, duracion, precio_base AS precio FROM ruta ORDER BY id_ruta DESC`);
         res.json(result.rows);
     } catch (err) {
         console.error("Error al obtener rutas:", err);
@@ -158,14 +158,14 @@ router.get('/rutas', async (req, res) => {
 
 // REGISTRAR UNA NUEVA RUTA 
 router.post('/rutas', async (req, res) => {
-    const { origen, destino, precio } = req.body;
+    const { origen, destino, precio, duracion } = req.body;
     try {
         const query = `
             INSERT INTO ruta (origen, destino, duracion, precio_base) 
-            VALUES ($1, $2, '04:00:00', $3) 
-            RETURNING id_ruta, origen, destino, precio_base AS precio
+            VALUES ($1, $2, $3, $4) 
+            RETURNING id_ruta, origen, destino, duracion, precio_base AS precio
         `;
-        const result = await pool.query(query, [origen, destino, precio]);
+        const result = await pool.query(query, [origen, destino, duracion, precio]);
         res.status(201).json({ mensaje: "Ruta creada con éxito", ruta: result.rows[0] });
     } catch (err) {
         console.error("Error al registrar ruta:", err);
@@ -427,16 +427,16 @@ router.put('/buses/:id', async (req, res) => {
 // EDITAR UNA RUTA
 router.put('/rutas/:id', async (req, res) => {
     const { id } = req.params;
-    const { origen, destino, precio } = req.body;
+    const { origen, destino, duracion, precio } = req.body;
 
     try {
         const query = `
             UPDATE ruta 
-            SET origen = $1, destino = $2, precio_base = $3 
-            WHERE id_ruta = $4
-            RETURNING id_ruta, origen, destino, precio_base AS precio
+            SET origen = $1, destino = $2, duracion = $3, precio_base = $4 
+            WHERE id_ruta = $5
+            RETURNING id_ruta, origen, destino, duracion, precio_base AS precio
         `;
-        const result = await pool.query(query, [origen, destino, precio, id]);
+        const result = await pool.query(query, [origen, destino, duracion, precio, id]);
 
         if (result.rows.length === 0) {
             return res.status(404).json({ error: "Ruta no encontrada" });

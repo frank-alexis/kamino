@@ -180,6 +180,7 @@ function editarRuta(id, origen, destino, precio) {
     document.getElementById('edit-id-ruta').value = id;
     document.getElementById('edit-origen').value = origen;
     document.getElementById('edit-destino').value = destino;
+    document.getElementById('edit-duracion').value = duracion;
     document.getElementById('edit-precio').value = precio;
 }
 
@@ -188,6 +189,7 @@ async function guardarEdicionRuta() {
     const data = {
         origen: document.getElementById('edit-origen').value,
         destino: document.getElementById('edit-destino').value,
+        duracion: document.getElementById('edit-duracion').value,
         precio: document.getElementById('edit-precio').value
     };
 
@@ -310,10 +312,11 @@ async function cargarTablaRutas() {
                 <td>${index + 1}</td>
                 <td>${r.origen}</td>
                 <td>${r.destino}</td>
+                <td>${r.duracion}</td>
                 <td><strong>S/. ${r.precio}</strong></td>
                 <td><span class="estado-activo">Activo</span></td>
                 <td>
-                    <button class="btn-action edit" onclick="editarRuta(${r.id_ruta}, '${r.origen}', '${r.destino}', ${r.precio})"><i class="fas fa-edit"></i></button>
+                    <button class="btn-action edit" onclick="editarRuta(${r.id_ruta}, '${r.origen}', '${r.destino}', '${r.duracion}', ${r.precio})"><i class="fas fa-edit"></i></button>
                     <button class="btn-action delete" onclick="eliminarRuta(${r.id_ruta})"><i class="fas fa-trash"></i></button>
                 </td>
             `;
