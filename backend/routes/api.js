@@ -209,12 +209,7 @@ router.get('/viajes', async (req, res) => {
     try {
         const query = `
             SELECT 
-                h.id_horario,
-                r.origen,
-                r.destino,
-                b.placa,
-                b.marca,
-                b.capacidad,
+                h.id_horario, r.origen, r.destino, b.placa, b.marca, b.capacidad,
                 to_char(h.fecha_salida, 'YYYY-MM-DD') as fecha_salida,
                 h.hora_salida,
                 CASE 
@@ -226,7 +221,7 @@ router.get('/viajes', async (req, res) => {
             INNER JOIN ruta r ON h.id_ruta = r.id_ruta
             INNER JOIN bus b ON h.id_bus = b.id_bus
             ORDER BY 
-                CASE WHEN estado = 'disponible' THEN 0 ELSE 1 END ASC,
+                (CASE WHEN h.fecha_salida < CURRENT_DATE OR (h.fecha_salida = CURRENT_DATE AND h.hora_salida < CURRENT_TIME) THEN 1 ELSE 0 END) ASC,
                 h.fecha_salida ASC, 
                 h.hora_salida ASC
         `;
