@@ -204,6 +204,7 @@ router.post('/viajes', async (req, res) => {
     }
 });
 
+//obtener viajes
 router.get('/viajes', async (req, res) => {
     try {
         const query = `
@@ -224,7 +225,10 @@ router.get('/viajes', async (req, res) => {
             FROM horario h
             INNER JOIN ruta r ON h.id_ruta = r.id_ruta
             INNER JOIN bus b ON h.id_bus = b.id_bus
-            ORDER BY h.fecha_salida ASC, h.hora_salida ASC
+            ORDER BY 
+                CASE WHEN estado = 'disponible' THEN 0 ELSE 1 END ASC,
+                h.fecha_salida ASC, 
+                h.hora_salida ASC
         `;
         const result = await pool.query(query);
         res.json(result.rows);
