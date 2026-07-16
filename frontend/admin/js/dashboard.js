@@ -31,12 +31,16 @@ async function cargarUsuarios() {
         
         tbody.innerHTML = '';
         
-        // Agregamos 'index' como segundo parámetro del forEach
         data.usuarios.forEach((u, index) => {
+            // Unimos nombres y apellidos para ahorrar espacio
+            const nombreCompleto = `${u.nombres} ${u.apellido_paterno} ${u.apellido_materno || ''}`;
+            
             const row = `<tr>
-                <td style="padding: 12px;">${index + 1}</td> <td style="padding: 12px;">${u.nombres} ${u.apellido_paterno}</td>
-                <td style="padding: 12px;">${u.correo}</td>
-                <td style="padding: 12px;">${u.rol}</td>
+                <td style="padding: 12px;">${index + 1}</td>
+                <td style="padding: 12px;"><strong>${nombreCompleto}</strong></td>
+                <td style="padding: 12px;">${u.tipo_documento}: ${u.numero_documento}</td>
+                <td style="padding: 12px;">${u.telefono}<br><small style="color:#666;">${u.correo}</small></td>
+                <td style="padding: 12px;">${u.rol.toUpperCase()}</td>
                 <td style="padding: 12px;"><span class="estado-${u.estado}">${u.estado}</span></td>
             </tr>`;
             tbody.innerHTML += row;
