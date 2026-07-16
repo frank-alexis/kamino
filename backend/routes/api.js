@@ -585,11 +585,19 @@ router.get('/mis-boletos/:id_usuario', async (req, res) => {
 });
 
 
+// OBTENER VENTAS CON DATOS DE GESTIÓN
 router.get('/ventas', async (req, res) => {
     try {
         const query = `
-            SELECT b.codigo_boleto, u.nombres, u.apellido_paterno, 
-                   r.origen, r.destino, h.fecha_salida, b.monto_pagado
+            SELECT 
+                b.codigo_boleto, 
+                u.nombres || ' ' || u.apellido_paterno AS pasajero, 
+                r.origen || ' - ' || r.destino AS ruta, 
+                to_char(b.fecha_compra, 'YYYY-MM-DD HH24:MI') as fecha_compra,
+                h.fecha_salida,
+                b.metodo_pago,
+                b.estado_boleto,
+                b.monto_pagado
             FROM boleto b
             JOIN usuario u ON b.id_usuario = u.id_usuario
             JOIN horario h ON b.id_horario = h.id_horario
@@ -603,4 +611,5 @@ router.get('/ventas', async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor" });
     }
 });
+
 module.exports = router; 

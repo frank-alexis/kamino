@@ -424,19 +424,20 @@ async function cargarVentas() {
         const tbody = document.getElementById('body-ventas');
         
         tbody.innerHTML = ventas.map(v => {
-            // Extraemos la fecha limpia desde el origen
-            const fechaLimpia = v.fecha_salida ? v.fecha_salida.split('T')[0] : '';
+            const fechaSalida = v.fecha_salida ? v.fecha_salida.split('T')[0] : 'N/A';
             
             return `
-            <tr data-fecha="${fechaLimpia}">
-                <td>${v.codigo_boleto}</td>
-                <td>${v.nombres} ${v.apellido_paterno}</td>
-                <td>${v.origen} - ${v.destino}</td>
-                <td>${fechaLimpia}</td> 
-                <td>${parseFloat(v.monto_pagado).toFixed(2)}</td>
+            <tr>
+                <td><strong>${v.codigo_boleto}</strong></td>
+                <td>${v.pasajero}</td>
+                <td>${v.ruta}</td>
+                <td>${v.fecha_compra}</td>      <td>${fechaSalida}</td>         <td>${v.metodo_pago}</td>
+                <td><span class="estado-${v.estado_boleto}">${v.estado_boleto}</span></td>
+                <td><strong>S/. ${parseFloat(v.monto_pagado).toFixed(2)}</strong></td>
             </tr>
-        `}).join('');
-
+            `;
+        }).join('');
+        
         recalcularTotalVisible(); 
     } catch (err) {
         console.error("Error al cargar ventas:", err);
@@ -450,13 +451,11 @@ function recalcularTotalVisible() {
 
     filas.forEach(fila => {
         if (fila.style.display !== 'none' && !fila.classList.contains('fila-total')) {
-            // Buscamos la celda del monto (la 5ta celda, índice 4)
-            const montoTexto = fila.cells[4].innerText;
+            const montoTexto = fila.cells[7].innerText.replace('S/.', '').trim();
             total += parseFloat(montoTexto) || 0;
         }
     });
 
-    // Actualizamos o creamos la fila del total
     let filaTotal = document.querySelector('.fila-total');
     if (!filaTotal) {
         filaTotal = document.createElement('tr');
@@ -464,18 +463,18 @@ function recalcularTotalVisible() {
         document.getElementById('body-ventas').appendChild(filaTotal);
     }
     
-    filaTotal.innerHTML = `<td colspan="4" style="text-align:right"><strong>TOTAL RECAUDADO:</strong></td>
+    filaTotal.innerHTML = `<td colspan="7" style="text-align:right"><strong>TOTAL RECAUDADO:</strong></td>
                            <td><strong>S/. ${total.toFixed(2)}</strong></td>`;
 }
 
 function filtrarVentas() {
     const inputBusqueda = document.getElementById("buscador-ventas").value.toLowerCase();
-    const fechaSeleccionada = document.getElementById("filtro-fecha-inicio").value; // Este valor ya es "YYYY-MM-DD"
+    const fechaSeleccionada = document.getElementById("filtro-fecha-inicio").value;
     const filas = document.querySelectorAll("#body-ventas tr:not(.fila-total)");
     
     filas.forEach(fila => {
-        // Obtenemos la fecha directa del atributo data-fecha
-        const fechaFila = fila.getAttribute('data-fecha');
+        
+        const fechaFila = fila.cells[4].innerText; 
         
         const textoFila = fila.textContent.toLowerCase();
         
@@ -487,6 +486,7 @@ function filtrarVentas() {
 
     recalcularTotalVisible();
 }
+
 function limpiarFiltros() {
     document.getElementById("buscador-ventas").value = "";
     document.getElementById("filtro-fecha-inicio").value = "";
