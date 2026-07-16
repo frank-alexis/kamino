@@ -26,7 +26,7 @@ async function cargarUsuarios() {
     const tbody = document.getElementById('usuarios-table-body');
     if (!tbody) return;
     try {
-        const response = await fetch('/admin/usuarios');
+        const response = await fetch('/api/admin/usuarios');
         const data = await response.json();
         
         tbody.innerHTML = '';
