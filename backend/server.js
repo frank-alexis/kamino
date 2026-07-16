@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
-// 3. SOLO ESTA LÍNEA es necesaria para el frontend (Sin usar el asterisco de forma directa)
+
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });

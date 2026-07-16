@@ -12,11 +12,50 @@ function showSection(sectionId) {
         target.style.display = 'block';
     }
 
+    if (sectionId === 'usuarios') {
+        cargarUsuarios();
+    }
+
     // 3. SI LA SECCIÓN ES VENTAS, CARGAMOS LOS DATOS
     if (sectionId === 'ventas') {
         cargarVentas();
     }
 }
+
+async function cargarUsuarios() {
+    const tbody = document.getElementById('usuarios-table-body');
+    if (!tbody) return;
+    try {
+        const response = await fetch('/admin/usuarios');
+        const data = await response.json();
+        
+        tbody.innerHTML = '';
+        data.usuarios.forEach(u => {
+            const row = `<tr>
+                <td style="padding: 12px;">${u.id_usuario}</td>
+                <td style="padding: 12px;">${u.nombres} ${u.apellido_paterno}</td>
+                <td style="padding: 12px;">${u.correo}</td>
+                <td style="padding: 12px;">${u.rol}</td>
+                <td style="padding: 12px;"><span class="estado-${u.estado}">${u.estado}</span></td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    } catch (error) {
+        console.error("Error al cargar usuarios:", error);
+    }
+}
+
+// Función de filtro para la tabla de usuarios
+function filtrarUsuarios() {
+    const filtro = document.getElementById('buscador-usuarios').value.toLowerCase();
+    const filas = document.querySelectorAll("#usuarios-table-body tr");
+    
+    filas.forEach(fila => {
+        const textoFila = fila.textContent.toLowerCase();
+        fila.style.display = textoFila.includes(filtro) ? "" : "none";
+    });
+}
+
 //filtrar buses
 function filtrarBuses() {
     const input = document.getElementById('buscador-buses');

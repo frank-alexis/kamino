@@ -15,6 +15,7 @@
                 <p>Administrador</p>
             </div>
             <nav class="nav-menu">
+                <button onclick="showSection('usuarios')"><i class="fas fa-users"></i> Gestión de Usuarios</button>
                 <button onclick="showSection('buses')"><i class="fas fa-bus"></i> Gestión de Buses</button>
                 <button onclick="showSection('rutas')"><i class="fas fa-route"></i> Gestión de Rutas</button>
                 <button onclick="showSection('viajes')"><i class="fas fa-calendar-alt"></i> Programar Viajes</button>
@@ -25,6 +26,32 @@
 
         <main class="main-content">
             <header><h2>Panel Administrativo Kamino</h2></header>
+
+            <section id="usuarios" class="content-section" style="display: none;">
+                <h3>Gestión de Clientes y Usuarios</h3>
+                <div class="tabla-box">
+                    <div class="table-toolbar">
+                        <div class="filter-group">
+                            <label>Buscar usuario:</label>
+                            <input class="search-input" type="text" id="buscador-usuarios" placeholder="Buscar por nombre o correo..." onkeyup="filtrarUsuarios()">
+                        </div>
+                    </div>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                        <thead>
+                            <tr style="background-color: #f2f2f2; text-align: left;">
+                                <th style="padding: 12px;">ID</th>
+                                <th style="padding: 12px;">Nombre Completo</th>
+                                <th style="padding: 12px;">Correo Electrónico</th>
+                                <th style="padding: 12px;">Rol</th>
+                                <th style="padding: 12px;">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuarios-table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
 
                 <section id="buses" class="content-section">
             <h3>Gestión de Autobuses</h3>

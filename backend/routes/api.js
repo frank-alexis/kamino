@@ -71,6 +71,29 @@ router.post('/auth/login', async (req, res) => {
     }
 });
 
+// LISTAR USUARIOS (Solo para administradores)
+router.get('/admin/usuarios', async (req, res) => {
+    try {
+        const query = `
+            SELECT id_usuario, tipo_documento, numero_documento, nombres, 
+                   apellido_paterno, apellido_materno, telefono, correo, rol, estado 
+            FROM usuario
+            ORDER BY id_usuario DESC
+        `;
+        
+        const result = await pool.query(query);
+        
+        res.json({
+            mensaje: "Lista de usuarios obtenida",
+            usuarios: result.rows
+        });
+        
+    } catch (err) {
+        console.error("Error al obtener usuarios:", err);
+        res.status(500).json({ error: "Error al recuperar la lista de usuarios." });
+    }
+});
+
 //  OBTENER TODOS LOS BUSES 
 router.get('/buses', async (req, res) => {
     try {
