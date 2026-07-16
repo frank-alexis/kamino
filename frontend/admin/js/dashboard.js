@@ -175,7 +175,7 @@ async function eliminarBus(id) {
 }
 
 // ACCIONES PARA RUTAS 
-function editarRuta(id, origen, destino, precio) {
+function editarRuta(id, origen, destino,duracion, precio) {
     document.getElementById('edit-ruta-modal').style.display = 'block';
     document.getElementById('edit-id-ruta').value = id;
     document.getElementById('edit-origen').value = origen;
