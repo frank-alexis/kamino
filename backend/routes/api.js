@@ -1,30 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db'); 
+const bcrypt = require('bcrypt'); 
 
-// ===   RUTAS DE AUTENTICACIÓN (CLIENTES) ===
-
-//REGISTRO DE USUARIO 
+// REGISTRO DE USUARIO CON HASH
 router.post('/auth/registro', async (req, res) => { 
-    const { 
-        tipo_documento, 
-        numero_documento, 
-        nombres, 
-        apellido_paterno, 
-        apellido_materno, 
-        telefono, 
-        correo, 
-        contrasena 
-    } = req.body;
+    const { tipo_documento, numero_documento, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena } = req.body;
 
     try {
+        // Encriptar la contraseña 
+        const saltRounds = 10;
+        const hashContrasena = await bcrypt.hash(contrasena, saltRounds);
+
         const query = `
             INSERT INTO usuario (tipo_documento, numero_documento, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena, rol, estado)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'cliente', 'activo') 
             RETURNING id_usuario, nombres, correo, rol
         `; 
         
-        const values = [tipo_documento, numero_documento, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena];
+        const values = [tipo_documento, numero_documento, nombres, apellido_paterno, apellido_materno, telefono, correo, hashContrasena];
         const result = await pool.query(query, values);
         
         res.status(201).json({ mensaje: "Usuario registrado con éxito", usuario: result.rows[0] });
@@ -37,7 +31,7 @@ router.post('/auth/registro', async (req, res) => {
     }
 });
 
-// INICIO DE SESIÓN (LOGIN - Sincronizado el formato de respuesta con el frontend)
+// INICIO DE SESIÓN
 router.post('/auth/login', async (req, res) => {
     const { correo, contrasena } = req.body;
 
@@ -50,8 +44,21 @@ router.post('/auth/login', async (req, res) => {
         }
 
         const usuario = result.rows[0];
+        let esValida = false;
 
-        if (usuario.contrasena !== contrasena) {
+        // 1. Verificamos si la contraseña ya es un hash 
+        if (usuario.contrasena.startsWith('$2b$')) {
+            esValida = await bcrypt.compare(contrasena, usuario.contrasena);
+        } else {
+            if (usuario.contrasena === contrasena) {
+                esValida = true;
+                // Migramos automáticamente a hash
+                const nuevoHash = await bcrypt.hash(contrasena, 10);
+                await pool.query('UPDATE usuario SET contrasena = $1 WHERE id_usuario = $2', [nuevoHash, usuario.id_usuario]);
+            }
+        }
+
+        if (!esValida) {
             return res.status(401).json({ error: "Contraseña incorrecta." });
         }
 
@@ -64,14 +71,13 @@ router.post('/auth/login', async (req, res) => {
                 rol: usuario.rol
             }
         });
-
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Error interno en el servidor." });
     }
 });
 
-// LISTAR USUARIOS (Solo para administradores)
+// LISTAR USUARIOS 
 router.get('/admin/usuarios', async (req, res) => {
     try {
         const query = `
@@ -124,7 +130,7 @@ router.post('/buses', async (req, res) => {
         const result = await client.query(busQuery, [placa, marca, modelo, capacidad]);
         const id_bus = result.rows[0].id_bus;
 
-        // 2. Generamos automáticamente los asientos (de 1 hasta la capacidad)
+        // 2. Generamos automáticamente los asientos
         for (let i = 1; i <= capacidad; i++) {
             await client.query(
                 'INSERT INTO asiento (id_bus, numero_asiento, estado) VALUES ($1, $2, $3)',
