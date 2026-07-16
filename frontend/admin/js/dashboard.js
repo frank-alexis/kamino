@@ -30,10 +30,11 @@ async function cargarUsuarios() {
         const data = await response.json();
         
         tbody.innerHTML = '';
-        data.usuarios.forEach(u => {
+        
+        // Agregamos 'index' como segundo parámetro del forEach
+        data.usuarios.forEach((u, index) => {
             const row = `<tr>
-                <td style="padding: 12px;">${u.id_usuario}</td>
-                <td style="padding: 12px;">${u.nombres} ${u.apellido_paterno}</td>
+                <td style="padding: 12px;">${index + 1}</td> <td style="padding: 12px;">${u.nombres} ${u.apellido_paterno}</td>
                 <td style="padding: 12px;">${u.correo}</td>
                 <td style="padding: 12px;">${u.rol}</td>
                 <td style="padding: 12px;"><span class="estado-${u.estado}">${u.estado}</span></td>
