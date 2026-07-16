@@ -204,7 +204,6 @@ router.post('/viajes', async (req, res) => {
     }
 });
 
-// OBTENER TODOS LOS HORARIOS PROGRAMADOS
 router.get('/viajes', async (req, res) => {
     try {
         const query = `
@@ -217,7 +216,11 @@ router.get('/viajes', async (req, res) => {
                 b.capacidad,
                 to_char(h.fecha_salida, 'YYYY-MM-DD') as fecha_salida,
                 h.hora_salida,
-                h.estado
+                CASE 
+                    WHEN h.fecha_salida < CURRENT_DATE THEN 'finalizado'
+                    WHEN h.fecha_salida = CURRENT_DATE AND h.hora_salida < CURRENT_TIME THEN 'finalizado'
+                    ELSE 'disponible'
+                END AS estado
             FROM horario h
             INNER JOIN ruta r ON h.id_ruta = r.id_ruta
             INNER JOIN bus b ON h.id_bus = b.id_bus
