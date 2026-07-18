@@ -186,10 +186,10 @@ body {
     grid-row: span 2; 
 }
 
-/* --- NUEVO CONTENEDOR PARA DESTINOS POPULARES --- */
+
 .destinos-populares-container {
-    max-width: 70%;      /* Limita el ancho al 70% */
-    margin: 50px auto;   /* Centrado y espacio arriba/abajo */
+    max-width: 70%;      
+    margin: 50px auto;  
 }
 
 .nombre {

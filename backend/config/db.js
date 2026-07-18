@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Creamos el pool usando la URL si existe, si no, usa los valores por defecto (útil para local)
+// Creamos el pool usando la URL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL || {
     user: process.env.DB_USER,

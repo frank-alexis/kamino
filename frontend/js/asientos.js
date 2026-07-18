@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let asientosSeleccionados = [];
 
     try {
-        //Traer los detalles del viaje y los asientos ocupados desde el Backend
+        
         const [resDetalles, resOcupados] = await Promise.all([
             fetch(`/api/horarios/${idHorario}/detalles`),
             fetch(`/api/horarios/${idHorario}/asientos-ocupados`)
@@ -30,19 +30,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         precioPasaje = parseFloat(detalles.precio);
         infoViaje.innerHTML = `<strong>Ruta:</strong> ${detalles.origen} ➔ ${detalles.destino} | <strong>Precio por Asiento:</strong> S/. ${precioPasaje.toFixed(2)}`;
 
-        // Generar la cuadrícula de asientos
+        // cuadrícula de asientos
         asientosContenedor.innerHTML = '';
         for (let i = 1; i <= detalles.capacidad; i++) {
             const botonAsiento = document.createElement('button');
             botonAsiento.innerText = i;
             botonAsiento.className = 'asiento-btn';
 
-            // Si el número de asiento está en el array de ocupados, lo bloqueamos en rojo
+            // lo bloqueamos en rojo
             if (asientosOcupados.includes(i)) {
                 botonAsiento.classList.add('ocupado-btn');
                 botonAsiento.disabled = true;
             } else {
-                // Si está libre, lo ponemos en verde y escuchamos el clic
+                // lo ponemos en verde
                 botonAsiento.classList.add('disponible-btn');
                 botonAsiento.addEventListener('click', () => toggleAsiento(i, botonAsiento));
             }
@@ -55,21 +55,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         infoViaje.innerText = "Error al conectar con el servidor.";
     }
 
-    // Función para seleccionar / deseleccionar asientos
+    // Función para seleccionar y deseleccionar asientos
     function toggleAsiento(numero, boton) {
         if (asientosSeleccionados.includes(numero)) {
-            // Si ya estaba seleccionado, lo quitamos
             asientosSeleccionados = asientosSeleccionados.filter(n => n !== numero);
             boton.classList.remove('seleccionado-btn');
             boton.classList.add('disponible-btn');
         } else {
-            // Si no estaba, lo agregamos
             asientosSeleccionados.push(numero);
             boton.classList.remove('disponible-btn');
             boton.classList.add('seleccionado-btn');
         }
 
-        // Actualizar el bloque de resumen inferior
         if (asientosSeleccionados.length > 0) {
             asientosTexto.innerText = asientosSeleccionados.sort((a,b)=>a-b).join(', ');
             btnProcesar.disabled = false;
@@ -83,13 +80,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     btnProcesar.addEventListener('click',async () => {
-        // Guardamos temporalmente el horario y los asientos elegidos en la caché del navegador
+        // Guardamos temporalmente el horario y los asientos elegidos
         localStorage.setItem('compra_id_horario', idHorario);
         localStorage.setItem('compra_asientos', JSON.stringify(asientosSeleccionados));
 
         const infoParaPago = {
             id_horario: idHorario,
-            precio: precioPasaje // Usas la variable que ya tienes calculada arriba
+            precio: precioPasaje 
         };
 
         localStorage.setItem('compra_info', JSON.stringify(infoParaPago));
@@ -106,7 +103,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert("Inicia sesión para continuar.");
             window.location.href = 'login.html';
         } else {
-            // 1. Llamamos al API de bloqueo antes de navegar
             try {
                 const response = await fetch('/api/bloquear-asientos', {
                     method: 'POST',
@@ -119,11 +115,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
 
                 if (response.ok) {
-                    // 2. Si el bloqueo fue exitoso, vamos al pago
                     window.location.href = 'pago.html';
                 } else {
                     alert("Los asientos ya no están disponibles. Por favor, selecciona otros.");
-                    location.reload(); // Recargamos para ver el estado real
+                    location.reload();
                 }
             } catch (err) {
                 alert("Error de conexión al reservar los asientos.");

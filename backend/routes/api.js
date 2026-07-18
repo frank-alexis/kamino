@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require('../config/db'); 
 const bcrypt = require('bcrypt'); 
 
-// REGISTRO DE USUARIO CON HASH
+// REGISTRO DE USUARIO
 router.post('/auth/registro', async (req, res) => { 
     const { tipo_documento, numero_documento, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena } = req.body;
 
@@ -46,7 +46,7 @@ router.post('/auth/login', async (req, res) => {
         const usuario = result.rows[0];
         let esValida = false;
 
-        // 1. Verificamos si la contraseña ya es un hash 
+        // Verificamos si la contraseña ya es un hash 
         if (usuario.contrasena.startsWith('$2b$')) {
             esValida = await bcrypt.compare(contrasena, usuario.contrasena);
         } else {
@@ -121,7 +121,7 @@ router.post('/buses', async (req, res) => {
     try {
         await client.query('BEGIN');
 
-        // 1. Insertamos el bus
+        // Insertamos el bus
         const busQuery = `
             INSERT INTO bus (placa, marca, modelo, capacidad, estado)
             VALUES ($1, $2, $3, $4, 'activo')
@@ -130,7 +130,7 @@ router.post('/buses', async (req, res) => {
         const result = await client.query(busQuery, [placa, marca, modelo, capacidad]);
         const id_bus = result.rows[0].id_bus;
 
-        // 2. Generamos automáticamente los asientos
+        // Generamos automáticamente los asientos
         for (let i = 1; i <= capacidad; i++) {
             await client.query(
                 'INSERT INTO asiento (id_bus, numero_asiento, estado) VALUES ($1, $2, $3)',
@@ -297,7 +297,7 @@ router.get('/horarios/:id/asientos-ocupados', async (req, res) => {
         const ocupados = result.rows.map(row => row.numero_asiento);
         res.json(ocupados);
     } catch (err) {
-        console.error("Error en asientos-ocupados:", err); // Es bueno dejar el error en consola
+        console.error("Error en asientos-ocupados:", err);
         res.status(500).json({ error: "Error al verificar ocupación." });
     }
 });
@@ -310,7 +310,7 @@ router.post('/bloquear-asientos', async (req, res) => {
         await pool.query('BEGIN');
 
         for (const numero_asiento of id_asientos) {
-            // 1. Verificamos si alguien YA bloqueó o compró este asiento
+            // Verificamos si alguien ya bloqueó o compró este asiento
             const checkQuery = `
                 SELECT id_asiento FROM asiento a
                 WHERE a.numero_asiento = $1 AND a.id_bus = (SELECT id_bus FROM horario WHERE id_horario = $2)
@@ -326,7 +326,7 @@ router.post('/bloquear-asientos', async (req, res) => {
                 throw new Error(`El asiento ${numero_asiento} ya no está disponible.`);
             }
 
-            // 2. Si está libre, insertamos el bloqueo
+            // Si está libre, insertamos el bloqueo
             await pool.query(
                 'INSERT INTO bloqueo_asiento (id_horario, id_asiento, usuario_id) VALUES ($1, $2, $3)',
                 [id_horario, check.rows[0].id_asiento, id_usuario]
@@ -370,7 +370,7 @@ router.get('/horarios/:id/detalles', async (req, res) => {
 });
 
 
-// 1. ELIMINAR BUS
+// ELIMINAR BUS
 router.delete('/buses/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -382,7 +382,7 @@ router.delete('/buses/:id', async (req, res) => {
     }
 });
 
-// 2. ELIMINAR RUTA
+// ELIMINAR RUTA
 router.delete('/rutas/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -394,7 +394,7 @@ router.delete('/rutas/:id', async (req, res) => {
     }
 });
 
-// 3. ELIMINAR VIAJE (HORARIO)
+// ELIMINAR VIAJE (HORARIO)
 router.delete('/viajes/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -484,7 +484,7 @@ router.post('/boletos', async (req, res) => {
     try {
         await client.query('BEGIN');
 
-        // 1. DEFINIMOS LA CONSULTA DE VALIDACIÓN AQUÍ ADENTRO
+        // DEFINIMOS LA CONSULTA DE VALIDACIÓN
         const queryBusqueda = `
             SELECT a.id_asiento 
             FROM asiento a
@@ -500,7 +500,7 @@ router.post('/boletos', async (req, res) => {
             )
         `;
 
-        // 2. EJECUTAMOS LA VALIDACIÓN
+        // EJECUTAMOS LA VALIDACIÓN
         const resAsiento = await client.query(queryBusqueda, [id_horario, id_asiento, id_usuario]);
 
         if (resAsiento.rows.length === 0) {
@@ -509,7 +509,7 @@ router.post('/boletos', async (req, res) => {
 
         const id_asiento_real = resAsiento.rows[0].id_asiento;
 
-        // 3. INSERTAMOS EL BOLETO (Usamos RETURNING para obtener el ID recién creado)
+        // INSERTAMOS EL BOLETO
         const insertQuery = `
             INSERT INTO boleto (id_usuario, id_horario, id_asiento, monto_pagado, metodo_pago, estado_boleto, fecha_compra)
             VALUES ($1, $2, $3, $4, $5, 'emitido', NOW())
@@ -518,12 +518,12 @@ router.post('/boletos', async (req, res) => {
         const resInsert = await client.query(insertQuery, [id_usuario, id_horario, id_asiento_real, monto_pagado, metodo_pago]);
         const nuevoId = resInsert.rows[0].id_boleto;
 
-        // 4. GENERAMOS EL CÓDIGO PROFESIONAL (BOL-20260712-0001)
+        // GENERAMOS EL CÓDIGO
         const fechaHoy = new Date().toISOString().slice(0, 10).replace(/-/g, ''); 
         const idFormateado = String(nuevoId).padStart(4, '0');
         const codigo_boleto = `BOL-${fechaHoy}-${idFormateado}`;
 
-        // 5. ACTUALIZAMOS CON EL CÓDIGO FINAL
+        // ACTUALIZAMOS CON EL CÓDIGO FINAL
         await client.query("UPDATE boleto SET codigo_boleto = $1 WHERE id_boleto = $2", [codigo_boleto, nuevoId]);
 
         await client.query('COMMIT');
@@ -591,7 +591,7 @@ router.get('/mis-boletos/:id_usuario', async (req, res) => {
 });
 
 
-// OBTENER VENTAS CON DATOS DE GESTIÓN
+// OBTENEMOS VENTAS
 router.get('/ventas', async (req, res) => {
     try {
         const query = `

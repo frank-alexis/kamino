@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById('auth-container');
 
     if (usuario) {
-        // Usuario logueado: mostramos "Mis Compras" y el menú de usuario
+        // si el usuario esta logueado, mostramos mis Compras y el menú de usuario
         container.innerHTML = `
             <a href="mis_compras.html">Mis Compras</a>
             <div class="user-menu">
@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById('btn-logout').addEventListener('click', () => {
             localStorage.removeItem('usuario_logueado');
-            window.location.href = 'index.html'; // Redirigir al home después de cerrar sesión
+            window.location.href = 'index.html';
         });
     } else {
-        // Usuario NO logueado: mostramos solo el botón de Iniciar Sesión
+        // si no esta logueado le mostramos solo el botón de Iniciar Sesión
         container.innerHTML = `
             <a href="login.html" class="btn-login">Iniciar Sesión</a>
         `;

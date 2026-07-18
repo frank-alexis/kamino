@@ -1,12 +1,12 @@
 
-// FUNCIONES GLOBALES (Nivel superior)
+// FUNCIONES GLOBALES
 function showSection(sectionId) {
-    // 1. Ocultar todas las secciones
+    // Ocultar todas las secciones
     document.querySelectorAll('.content-section').forEach(section => {
         section.style.display = 'none';
     });
 
-    // 2. Mostrar la seleccionada
+    // Mostrar la seleccionada
     const target = document.getElementById(sectionId);
     if (target) {
         target.style.display = 'block';
@@ -16,12 +16,13 @@ function showSection(sectionId) {
         cargarUsuarios();
     }
 
-    // 3. SI LA SECCIÓN ES VENTAS, CARGAMOS LOS DATOS
+    // SI LA SECCIÓN ES VENTAS CARGAMOS LOS DATOS
     if (sectionId === 'ventas') {
         cargarVentas();
     }
 }
 
+//función cargar usuarios
 async function cargarUsuarios() {
     const tbody = document.getElementById('usuarios-table-body');
     if (!tbody) return;
@@ -32,7 +33,7 @@ async function cargarUsuarios() {
         tbody.innerHTML = '';
         
         data.usuarios.forEach((u, index) => {
-            // Unimos nombres y apellidos para ahorrar espacio
+            // Unimos nombres y apellidos
             const nombreCompleto = `${u.nombres} ${u.apellido_paterno} ${u.apellido_materno || ''}`;
             
             const row = `<tr>
@@ -123,6 +124,7 @@ function filtrarViajes() {
 
 
 // ACCIONES PARA BUSES 
+
 // Abrir el modal con los datos actuales
 function editarBus(id, placa, marca, modelo, capacidad) { 
     document.getElementById('edit-modal').style.display = 'block';
@@ -152,7 +154,7 @@ async function guardarEdicionBus() {
             body: JSON.stringify(datosActualizados)
         });
 
-        // Manejamos la respuesta
+        //mensaje
         if (response.ok) {
             alert("¡Bus actualizado exitosamente!");
             document.getElementById('edit-modal').style.display = 'none';
@@ -166,7 +168,7 @@ async function guardarEdicionBus() {
         alert("Hubo un error de conexión con el servidor.");
     }
 }
-
+//función eliminar bus
 async function eliminarBus(id) {
     if (confirm("¿Estás seguro de eliminar este bus?")) {
         try {
@@ -188,7 +190,7 @@ function editarRuta(id, origen, destino,duracion, precio) {
     document.getElementById('edit-duracion').value = duracion;
     document.getElementById('edit-precio').value = precio;
 }
-
+//función guardar edición de rutas
 async function guardarEdicionRuta() {
     const id = document.getElementById('edit-id-ruta').value;
     const data = {
@@ -228,13 +230,9 @@ async function eliminarRuta(id) {
 
 function editarViaje(id, idRuta, idBus, fecha, hora) {
     document.getElementById('edit-viaje-modal').style.display = 'block';
-
-    // Rellenar campos ocultos y inputs
     document.getElementById('edit-id-viaje').value = id;
     document.getElementById('edit-fecha').value = fecha;
     document.getElementById('edit-hora').value = hora;
-
-    // SELECCIONAR AUTOMÁTICAMENTE EN LOS SELECTS
     document.getElementById('edit-select-ruta').value = idRuta;
     document.getElementById('edit-select-bus').value = idBus;
 }
@@ -329,7 +327,7 @@ async function cargarTablaRutas() {
         });
     } catch (error) { console.error("Error:", error); }
 }
-
+//función para cargar la tabla de horios
 async function cargarTablaHorarios() {
     const horariosTableBody = document.getElementById('horarios-table-body');
     if (!horariosTableBody) return;
@@ -369,7 +367,7 @@ async function cargarSelectsViaje() {
         const rutas = await resRutas.json();
         const buses = await resBuses.json();
 
-        // Lista de selects a llenar (tanto del formulario principal como del modal)
+        // Lista de selects a llenar
         const selectsRuta = [document.getElementById('select-ruta'), document.getElementById('edit-select-ruta')];
         const selectsBus = [document.getElementById('select-bus'), document.getElementById('edit-select-bus')];
 
@@ -402,8 +400,6 @@ function configurarFechaMinima() {
                             .toISOString()
                             .split('T')[0];
 
-    // Seleccionamos solo los inputs que NO sean de filtrado
-    // Usamos :not(.filtro-busqueda) para ignorar los buscadores
     const inputsFecha = document.querySelectorAll('input[type="date"]:not(.filtro-busqueda)');
     
     inputsFecha.forEach(input => {
@@ -416,7 +412,7 @@ function configurarFechaMinima() {
     });
 }
 
-// Función para cargar los datos al activar la sección
+// Función para cargar los datos de ventas
 async function cargarVentas() {
     try {
         const res = await fetch('/api/ventas');
@@ -444,7 +440,7 @@ async function cargarVentas() {
     }
 }
 
-// 1. Nueva función para sumar solo las filas visibles
+// función para sumar solo las filas visibles
 function recalcularTotalVisible() {
     const filas = document.querySelectorAll("#body-ventas tr");
     let total = 0;
@@ -466,7 +462,7 @@ function recalcularTotalVisible() {
     filaTotal.innerHTML = `<td colspan="7" style="text-align:right"><strong>TOTAL RECAUDADO:</strong></td>
                            <td><strong>S/. ${total.toFixed(2)}</strong></td>`;
 }
-
+//funcion para filtrar ventas
 function filtrarVentas() {
     const inputBusqueda = document.getElementById("buscador-ventas").value.toLowerCase();
     const fechaSeleccionada = document.getElementById("filtro-fecha-inicio").value;
@@ -520,6 +516,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // FORMULARIOS
+    
     document.getElementById('bus-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const datos = Object.fromEntries(new FormData(e.target));

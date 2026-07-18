@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ultimoIdBoleto = data.id_boleto;
             }
 
-            // Guardamos el ID para que boleto.html lo consulte después
+            // Guardamos el ID
             localStorage.setItem('ultimo_id_boleto', ultimoIdBoleto);
 
             // Limpieza
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.removeItem('compra_asientos');
             localStorage.removeItem('compra_info');
 
-            // Liberar bloqueos de asientos
+            // Liberamos el bloqueo de asiento
             await fetch('/api/bloquear-asientos/liberar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }, 

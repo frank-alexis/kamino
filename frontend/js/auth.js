@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // MANEJO DEL LOGIN
+    // LOGIN
 
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -43,19 +43,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                // Guardamos los datos de sesión sincronizados
+                // Guardamos los datos de sesión
                 localStorage.setItem('user_id', data.usuario.id_usuario);
                 localStorage.setItem('user_name', data.usuario.nombres);
                 localStorage.setItem('user_rol', data.usuario.rol);
                 
-                // Formato agrupado para que asientos.js lo lea perfectamente
                 localStorage.setItem('usuario_logueado', JSON.stringify(data.usuario));
 
-                // EVALUACIÓN DE REDIRECCIÓN INTELIGENTE
+                // evalumos la redirección
                 if (data.usuario.rol === 'admin') {
                     window.location.href = 'admin/dashboard.html';
                 } else {
-                    // Si venía de seleccionar asientos, regresa a terminar el pago
+                    // Si el cliente venía de seleccionar asientos, regresa a terminar el pago
                     const idHorarioTemp = localStorage.getItem('compra_id_horario');
                     if (idHorarioTemp && idHorarioTemp !== "null") {
                         window.location.href = `asientos.html?id_horario=${idHorarioTemp}`;
@@ -102,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem('user_rol', data.usuario.rol);
                 localStorage.setItem('usuario_logueado', JSON.stringify(data.usuario));
 
-                // ¿Tenía una compra iniciada? Lo devolvemos al bus de inmediato
+                
                 const idHorarioTemp = localStorage.getItem('compra_id_horario');
                 if (idHorarioTemp && idHorarioTemp !== "null") {
                     window.location.href = `asientos.html?id_horario=${idHorarioTemp}`;

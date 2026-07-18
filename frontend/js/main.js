@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const contenedorResultados = document.getElementById('contenedor-resultados');
     const resultadosTitulo = document.getElementById('resultados-titulo');
 
-    let todasLasCiudades = []; // Nueva variable global
+    let todasLasCiudades = [];
 
-    // 1. Cargar ciudades una sola vez
+    // Cargar ciudades
     async function cargarCiudadesBuscador() {
         try {
             const response = await fetch('/api/rutas');
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) { console.error("Error:", error); }
     }
 
-    // 2. Función que redibuja los selects filtrando el valor contrario
+    // Función para que el usuario no selecione dos ciudades iguales
     function renderizarSelects() {
         const selO = selectOrigen.value;
         const selD = selectDestino.value;
@@ -30,14 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
         selectOrigen.innerHTML = '<option value="" disabled selected>¿Desde dónde viajas?</option>';
         selectDestino.innerHTML = '<option value="" disabled selected>¿A dónde vas?</option>';
 
-        // Dibujar Origen (excluye lo que esté en Destino)
+        // Dibujar Origen
         todasLasCiudades.forEach(ciudad => {
             if (ciudad !== selD) {
                 selectOrigen.innerHTML += `<option value="${ciudad}" ${selO === ciudad ? 'selected' : ''}>${ciudad}</option>`;
             }
         });
 
-        // Dibujar Destino (excluye lo que esté en Origen)
+        // Dibujar Destino
         todasLasCiudades.forEach(ciudad => {
             if (ciudad !== selO) {
                 selectDestino.innerHTML += `<option value="${ciudad}" ${selD === ciudad ? 'selected' : ''}>${ciudad}</option>`;
@@ -53,14 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarCiudadesBuscador();
 
 
-    // Configurar la fecha mínima en el calendario para que no seleccionen días pasados
+    // Configuramos la fecha mínima en el calendario para que no seleccionen días pasados
     if (searchFecha) {
         const hoy = new Date().toISOString().split('T')[0];
         searchFecha.min = hoy;
     }
 
 
-    //ESCUCHAR EL EVENTO DE BÚSQUEDA
+    //EVENTO DE BÚSQUEDA
 
     if (buscadorForm) {
         buscadorForm.addEventListener('submit', async (e) => {
@@ -124,6 +124,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function seleccionarViaje(idHorario) {
-    // Redirige pasando el ID del horario programado como parámetro de la URL
     window.location.href = `asientos.html?id_horario=${idHorario}`;
 }

@@ -1,5 +1,5 @@
 async function cargarBoleto() {
-    // 1. Obtenemos el ID guardado en el pago
+    // Obtenemos el ID guardado en el pago
     const idBoleto = localStorage.getItem('ultimo_id_boleto');
     
     if (!idBoleto) {
@@ -8,7 +8,7 @@ async function cargarBoleto() {
     }
 
     try {
-        // 2. Hacemos la consulta al servidor
+        // Hacemos la consulta al servidor
         const response = await fetch(`/api/boletos/${idBoleto}`);
         
         if (!response.ok) throw new Error("No se pudo obtener el boleto del servidor");
@@ -18,7 +18,7 @@ async function cargarBoleto() {
    
         const fechaRaw = boleto.fecha_salida ? boleto.fecha_salida.split('T')[0] : 'Fecha no disponible';
 
-        // 4. Inyectamos los datos en el HTML
+        // Inyectamos los datos en el HTML
         const detalleContainer = document.getElementById('detalle-boleto');
         if (detalleContainer) {
             detalleContainer.innerHTML = `

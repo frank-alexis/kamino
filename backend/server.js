@@ -4,15 +4,16 @@ const path = require('path');
 const pool = require('./config/db');
 
 const app = express();
+//Puerto node.js
 const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 app.use(express.json());
 
-// 1. Servir archivos estáticos del frontend
+// Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// 2. Cargar rutas de API
+//Cargar rutas de API
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 

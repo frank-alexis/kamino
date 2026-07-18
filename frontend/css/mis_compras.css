@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-left: 5px solid #f59e0b; /* Color Kamino */
+    border-left: 5px solid #f59e0b;
 }
 
 .card-boleto h3 { margin: 0 0 10px 0; color: #1e3a8a; }
